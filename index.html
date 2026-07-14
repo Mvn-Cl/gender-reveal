@@ -536,6 +536,59 @@
     margin-top:2px;
   }
 
+
+  /* ---- Ballon de football animé — page 7/8 ---- */
+  .football-stage{
+    width:min(88vw, 420px);
+    height:105px;
+    position:relative;
+    overflow:hidden;
+    margin:8px auto 2px;
+  }
+  .football-ball{
+    position:absolute;
+    width:66px;
+    height:66px;
+    object-fit:contain;
+    left:calc(50% - 33px);
+    bottom:4px;
+    filter:drop-shadow(0 9px 7px rgba(0,0,0,.35));
+    transform-origin:center;
+    animation:footballBounce 2.15s cubic-bezier(.28,.72,.45,1) infinite;
+    animation-play-state:paused;
+  }
+  .step.active .football-ball{
+    animation-play-state:running;
+  }
+  @keyframes footballBounce{
+    0%,100%{
+      transform:translateY(0) rotate(0deg) scaleX(1.04) scaleY(.96);
+    }
+    18%{
+      transform:translateY(-58px) rotate(105deg) scaleX(.98) scaleY(1.02);
+    }
+    36%{
+      transform:translateY(0) rotate(210deg) scaleX(1.09) scaleY(.91);
+    }
+    52%{
+      transform:translateY(-34px) rotate(300deg) scaleX(.99) scaleY(1.01);
+    }
+    68%{
+      transform:translateY(0) rotate(390deg) scaleX(1.06) scaleY(.94);
+    }
+    80%{
+      transform:translateY(-17px) rotate(445deg);
+    }
+    91%{
+      transform:translateY(0) rotate(500deg) scaleX(1.03) scaleY(.97);
+    }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .football-ball{
+      animation:none;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -689,6 +742,9 @@
     </div>
     <p class="muted">Rendez-vous le 29 août à 16h00 !</p>
     <div class="balloons-row">🎈♥🎈</div>
+    <div class="football-stage" aria-hidden="true">
+      <img class="football-ball" src="football.png" alt="">
+    </div>
     <a class="btn btn-outline" href="invitation.png" download="Invitation-Gender-Reveal-Corentin-Gisele.png" style="margin-top:22px; text-decoration:none;">TÉLÉCHARGER L’INVITATION</a>
   </div>
 
