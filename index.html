@@ -715,6 +715,109 @@
   }
 
 
+
+  /* ---- Faux indice — page 5 ---- */
+  .hint-button{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    margin:0 auto 14px;
+    padding:10px 20px;
+    border:1.5px solid var(--gold);
+    border-radius:999px;
+    background:rgba(216,162,74,.08);
+    color:var(--gold);
+    font-size:.78rem;
+    font-weight:800;
+    letter-spacing:.1em;
+    box-shadow:0 8px 22px rgba(0,0,0,.22);
+    transition:transform .18s ease, background .18s ease;
+  }
+
+  .hint-button:hover{
+    transform:translateY(-2px);
+    background:rgba(216,162,74,.16);
+  }
+
+  .hint-modal{
+    position:fixed;
+    inset:0;
+    z-index:1000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    background:rgba(10,7,6,.78);
+    backdrop-filter:blur(5px);
+    -webkit-backdrop-filter:blur(5px);
+  }
+
+  .hint-modal.open{
+    display:flex;
+    animation:hintFadeIn .22s ease both;
+  }
+
+  .hint-dialog{
+    width:min(88vw, 340px);
+    padding:28px 22px 22px;
+    border:1.5px solid rgba(216,162,74,.75);
+    border-radius:22px;
+    background:linear-gradient(160deg, #2a1e19, #17100f);
+    color:var(--paper);
+    text-align:center;
+    box-shadow:0 24px 60px rgba(0,0,0,.55);
+    animation:hintPop .28s cubic-bezier(.2,.9,.3,1.2) both;
+  }
+
+  .hint-icon{
+    font-size:2rem;
+    margin-bottom:8px;
+  }
+
+  .hint-title{
+    margin:0 0 12px;
+    color:var(--gold);
+    font-family:var(--font-script);
+    font-size:2rem;
+    font-weight:400;
+  }
+
+  .hint-message{
+    margin:0 0 22px;
+    font-size:1.08rem;
+    line-height:1.55;
+    font-weight:600;
+  }
+
+  .hint-close{
+    width:100%;
+    padding:13px 18px;
+    border-radius:999px;
+    background:var(--gold);
+    color:#281a08;
+    font-size:.86rem;
+    font-weight:800;
+    letter-spacing:.03em;
+  }
+
+  @keyframes hintFadeIn{
+    from{ opacity:0; }
+    to{ opacity:1; }
+  }
+
+  @keyframes hintPop{
+    from{ opacity:0; transform:translateY(12px) scale(.94); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .hint-modal.open,
+    .hint-dialog{
+      animation:none;
+    }
+  }
+
 </style>
 </head>
 <body>
@@ -838,6 +941,9 @@
     
     <div class="script gold">Place au suspense !</div>
     <p class="lead"><span class="guest-name">Invité(e)</span>, le prono : <span class="edit-me">Bébé Celle</span> est...</p>
+    <button class="hint-button" type="button" onclick="openHintModal()">
+      💡 INDICE
+    </button>
 
     <div class="team-match-row" aria-label="Choix du pronostic">
       <div class="team-col team-side team-side-boy">
@@ -1221,5 +1327,55 @@ function animateConfetti(){
 }
 
 </script>
+
+<div class="hint-modal" id="hintModal"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="hintModalTitle"
+     aria-hidden="true"
+     onclick="closeHintModal(event)">
+  <div class="hint-dialog" onclick="event.stopPropagation()">
+    <div class="hint-icon" aria-hidden="true">🤫</div>
+    <h2 class="hint-title" id="hintModalTitle">Indice exclusif…</h2>
+    <p class="hint-message">Le bébé sera métisse 👶🏾😇</p>
+    <button class="hint-close" type="button" onclick="closeHintModal()">
+      J’AI COMPRIS 😄
+    </button>
+  </div>
+</div>
+
+
+<script>
+  function openHintModal(){
+    const modal = document.getElementById('hintModal');
+    if (!modal) return;
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    const closeButton = modal.querySelector('.hint-close');
+    if (closeButton) closeButton.focus();
+  }
+
+  function closeHintModal(event){
+    if (event && event.target !== event.currentTarget) return;
+    const modal = document.getElementById('hintModal');
+    if (!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    const hintButton = document.querySelector('.hint-button');
+    if (hintButton) hintButton.focus();
+  }
+
+  document.addEventListener('keydown', function(event){
+    if (event.key === 'Escape'){
+      const modal = document.getElementById('hintModal');
+      if (modal && modal.classList.contains('open')){
+        closeHintModal();
+      }
+    }
+  });
+</script>
+
 </body>
 </html>
